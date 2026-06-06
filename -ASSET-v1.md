@@ -10,6 +10,22 @@ REQUIRED FORMAT FOR EACH ASSET ENTRY:
 ## ASSET:{NAME OF ENVIRONMENT} {YYYY-MM-DD HH:MM} → {CONTENT}
 
 ####### <!-- ANCHOR MARKER - ADD ALL NEW ASSET ENTRIES DIRECTLY BELOW THIS LINE, NEVER DELETE OR EDIT PREVIOUS ASSET ENTRIES-->
+## ASSET:ts-crypto 2026-06-06 → pipeline fully operational — run #9 success (1m 10s)
+
+`ts-crypto` end-to-end workflow confirmed working. Crypto news fetched, Ollama analysed, docs and CSV written.
+
+| Fix applied | Detail |
+|---|---|
+| Jobs serialised | `asset needs: [fetch, issue]` — eliminates concurrent Ollama calls |
+| Repo made public | GitHub Free plan requires public repos for org secret access |
+| Org secret corrected | `OLLAMA_SECRET` re-set via `--body` (64 chars, no trailing newline) |
+
+**Outputs from run #9 (2026-06-06):**
+- `would/-log-asset-v1.csv` — first row written: BTC/ETH price drop analysis
+- `-ISSUE-v1.md` and `-ASSET-v1.md` — ISSUE:CRYPTO and ASSET:CRYPTO entries written
+
+**Architecture mirrors gs-anz exactly** — same workflow structure, same Node.js scripts, same anchor markers. Domain-specific: crypto RSS sources, `ISSUE:CRYPTO` / `ASSET:CRYPTO` labels, `qwen2.5:7b` crypto prompts.
+
 ## ASSET:ts-crypto 2026-06-06 → initial test runs — pending Ollama fix
 
 - `would-update #1` — failed: `ISSUE_ANALYSIS not set` (concurrent run with gs-anz, empty Ollama response passed silently)
