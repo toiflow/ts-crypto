@@ -1,0 +1,65 @@
+name: would-update
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 12pm NZST daily (UTC+12); shifts to 1pm in NZDT (UTC+13)
+  workflow_dispatch:       # allow manual run
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    outputs:
+      issue_prompt: ${{ steps.prompts.outputs.issue_prompt }}
+      asset_prompt: ${{ steps.prompts.outputs.asset_prompt }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - id: prompts
+        run: |
+          NEWS=$(node would-read-md.js)
+          echo "issue_prompt<<GS_CRYPTO_EOF" >> $GITHUB_OUTPUT
+          printf 'You are a crypto risk analyst. Based on the crypto news below, identify:\n- Any significant price movements or expected changes\n- Key risks or concerns for investors (volatility, regulation, security)\n- Any urgent action signals\n\nFormat your response as 3-5 short bullet points starting with a dash and space. Keep each bullet to one line. No intro sentence.\n\n' >> $GITHUB_OUTPUT
+          echo "$NEWS" >> $GITHUB_OUTPUT
+          echo "GS_CRYPTO_EOF" >> $GITHUB_OUTPUT
+          echo "asset_prompt<<GS_CRYPTO_EOF" >> $GITHUB_OUTPUT
+          printf 'You are a crypto asset analyst. Based on the crypto news below, summarize:\n- Current BTC/ETH price level or trend if mentioned\n- What this means for each segment: BTC, ETH, altcoins, DeFi, stablecoins\n- Any opportunity or positioning signal\n\nFormat your response as 3-5 short bullet points starting with a dash and space. Keep each bullet to one line. No intro sentence.\n\n' >> $GITHUB_OUTPUT
+          echo "$NEWS" >> $GITHUB_OUTPUT
+          echo "GS_CRYPTO_EOF" >> $GITHUB_OUTPUT
+
+  issue:
+    needs: fetch
+    uses: toiflow/-toiflow/.github/workflows/must-update-content.yml@main
+    with:
+      prompt: ${{ needs.fetch.outputs.issue_prompt }}
+    secrets: inherit
+
+  asset:
+    needs: fetch
+    uses: toiflow/-toiflow/.github/workflows/must-update-content.yml@main
+    with:
+      prompt: ${{ needs.fetch.outputs.asset_prompt }}
+    secrets: inherit
+
+  update:
+    needs: [issue, asset]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Update docs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ISSUE_ANALYSIS: ${{ needs.issue.outputs.response }}
+          ASSET_ANALYSIS: ${{ needs.asset.outputs.response }}
+        run: node would-update-content.js
+      - name: Update CSV log
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ASSET_ANALYSIS: ${{ needs.asset.outputs.response }}
+        run: node would-update-csv.js
