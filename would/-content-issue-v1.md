@@ -8,6 +8,11 @@ REQUIRED FORMAT FOR EACH ISSUE ENTRY:
 ## ISSUE:{NAME OF ENVIRONMENT} {YYYY-MM-DD HH:MM} → {CONTENT}
 
 ####### <!-- ANCHOR MARKER - ADD ALL NEW ASSET ENTRIES DIRECTLY BELOW THIS LINE, NEVER DELETE OR EDIT PREVIOUS ASSET ENTRIES-->
+## ISSUE:CRYPTO 2026-06-07 07:02
+- Significant price movements: Bitcoin and Ethereum experienced double-digit declines, with some reports indicating falls of 15% or more.
+- Key risks for investors: Increased market volatility and critical support levels being tested suggest heightened risk. Regulatory uncertainties could further exacerbate these issues.
+- Urgent action signals: Investors should consider diversifying their portfolios and closely monitoring regulatory developments and security measures to mitigate potential losses.
+
 ## ISSUE:CRYPTO 2026-06-06 15:22
 - Bitcoin and Ethereum are experiencing their worst week since July 2024.
 - Crypto markets show significant volatility with double-digit drops for multiple cryptocurrencies.
