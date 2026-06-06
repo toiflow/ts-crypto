@@ -16,13 +16,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - id: debug-secrets
-        env:
-          OLLAMA_SECRET: ${{ secrets.OLLAMA_SECRET }}
-          OLLAMA_URL: ${{ secrets.OLLAMA_URL }}
-        run: |
-          echo "🔑 ts-crypto sees OLLAMA_SECRET length: ${#OLLAMA_SECRET}"
-          echo "🔗 ts-crypto sees OLLAMA_URL length: ${#OLLAMA_URL}"
       - id: prompts
         run: |
           NEWS=$(node would-read-md.js)
