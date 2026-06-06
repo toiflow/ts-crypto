@@ -10,6 +10,13 @@ REQUIRED FORMAT FOR EACH ASSET ENTRY:
 ## ASSET:{NAME OF ENVIRONMENT} {YYYY-MM-DD HH:MM} → {CONTENT}
 
 ####### <!-- ANCHOR MARKER - ADD ALL NEW ASSET ENTRIES DIRECTLY BELOW THIS LINE, NEVER DELETE OR EDIT PREVIOUS ASSET ENTRIES-->
+## ASSET:ts-crypto 2026-06-06 → run #10 success — rotated OLLAMA_SECRET confirmed (1m 2s)
+
+- Manually triggered after `OLLAMA_SECRET` rotation
+- Status: **Success** in 1m 2s — all jobs passed: `fetch` → `issue` → `asset` → `update`
+- Confirms rotated secret flows correctly from GitHub org secrets through Cloudflare WAF to Ollama
+- 2 warnings: Node.js 20 deprecation notices — non-blocking
+
 ## ASSET:ts-crypto 2026-06-06 → pipeline fully operational — run #9 success (1m 10s)
 
 `ts-crypto` end-to-end workflow confirmed working. Crypto news fetched, Ollama analysed, docs and CSV written.
